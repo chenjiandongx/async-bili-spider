@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
 不知道为什么，莫名觉得这样的代码写起来很舒服....
 
-接下来就是爬虫代码的编写了，具体请查看 [async_bili.py](https://github.com/chenjiandongx/async-bili-spider/blob/master/async_spider.py)。
+接下来就是爬虫代码的编写了，参考了 [https://pawelmhm.github.io/asyncio/python/aiohttp/2016/04/22/asyncio-aiohttp.html](https://pawelmhm.github.io/asyncio/python/aiohttp/2016/04/22/asyncio-aiohttp.html) 这篇文章，具体请查看 [async_bili.py](https://github.com/chenjiandongx/async-bili-spider/blob/master/async_spider.py)。
 
 和我的另外一个 B 站多进程爬虫 [chenjiandongx/bili-spider](https://github.com/chenjiandongx/bili-spider) 做了速度的对比。
 
