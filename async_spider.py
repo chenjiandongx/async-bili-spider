@@ -6,6 +6,7 @@ import json
 import asyncio
 from contextlib import contextmanager
 
+import aiofiles
 from aiohttp import ClientSession
 
 
@@ -45,8 +46,22 @@ async def run(count):
             asyncio.ensure_future(fetch(sem, url.format(i), session))
             for i in range(count)]
         # 使用 gather(*tasks) 收集数据，wait(tasks) 不收集数据
-        data = await asyncio.gather(*tasks)
-    return data
+        return await asyncio.gather(*tasks)
+
+
+async def save(count, path='bili.json'):
+    """
+    异步存储文件
+
+    :param count: 迭代次数
+    :param path: 文件路径
+    """
+
+    data = await asyncio.gather(asyncio.ensure_future(run(count)))
+    result = [d for d in data[0] if d]
+    async with aiofiles.open(path, mode='w+') as f:
+        await f.write(json.dumps(result))
+        print('爬取: {} 条数据'.format(len(result)))
 
 
 # 上下文管理器，用与计算耗时
@@ -61,13 +76,7 @@ def timer():
 
 if __name__ == "__main__":
     MAX_CONNECT_COUNT = 1000    # 最大并发数
-    NUMBER = 20000
+    NUMBER = 2000
     with timer():
         loop = asyncio.get_event_loop()
-        future = asyncio.ensure_future(run(NUMBER))
-
-        # 过滤数据
-        result = [r for r in loop.run_until_complete(future) if r]
-        with open('bili.json', 'w+') as f:
-            json.dump(result, f)
-    print('共爬取: {} 条数据'.format(len(result)))
+        loop.run_until_complete(asyncio.ensure_future(save(NUMBER)))
