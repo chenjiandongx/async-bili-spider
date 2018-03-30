@@ -1,2 +1,4 @@
 aiohttp
 aiofiles
+aiomysql
+pyut
