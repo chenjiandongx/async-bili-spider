@@ -19,7 +19,7 @@ async def fetch(sem, url, session):
     :param sem: Semaphore 实例
     :param url: 请求链接
     :param session: Session 实例
-    :return:请求数据
+    :return: 请求数据
     """
     try:
         async with sem:
@@ -27,7 +27,7 @@ async def fetch(sem, url, session):
                 data = await response.json()
             if data and data.get('code', None) == 0:  # 只返回有效数据
                 return data
-    except Exception as e:     # 简单异常处理
+    except Exception as e:
         print(e)
 
 
@@ -61,12 +61,12 @@ async def save_to_files(start, stop, path, label):
     :param path: 文件路径
     :param label: 任务名称
     """
-    print("启动: 任务 {}".format(label))
+    print("Running: job {}".format(label))
     data = await asyncio.gather(asyncio.ensure_future(run(start, stop)))
     result = [d for d in data[0] if d]
     async with aiofiles.open(path, mode='w+') as f:
         await f.write(json.dumps(result))
-        print('存储: {} 条数据'.format(len(result)))
+        print('Fetch data: {}'.format(len(result)))
 
 
 async def save_to_database(start, stop, label, loop):
@@ -89,7 +89,7 @@ async def save_to_database(start, stop, label, loop):
         v_share int,
         v_name text);
     """
-    print("启动: 任务 {}".format(label))
+    print("Running: job {}".format(label))
     data = await asyncio.gather(asyncio.ensure_future(run(start, stop)))
     result = [
         (
@@ -119,7 +119,7 @@ async def save_to_database(start, stop, label, loop):
             "values (%s, %s, %s, %s, %s, %s, %s, %s)", result)
         await conn.commit()
     conn.close()
-    print('存储: {} 条数据'.format(len(result)))
+    print('Fetch data: {}'.format(len(result)))
 
 
 def get_files_tasks(index):
@@ -127,7 +127,7 @@ def get_files_tasks(index):
     获取 `save_to_files()` 所需任务
 
     :param index: 任务索引
-    :return 任务列表
+    :return: 任务列表
     """
     _tasks = [
         asyncio.ensure_future(
@@ -147,7 +147,7 @@ def get_database_tasks(index, loop):
 
     :param index: 任务索引
     :param loop: 事件循环
-    :return 任务列表
+    :return: 任务列表
     """
     _tasks = [
         asyncio.ensure_future(
@@ -169,6 +169,7 @@ if __name__ == "__main__":
         for index in range(0, 42, 2):
             with timeit.timeit_block('m'):
                 tasks = get_database_tasks(index, loop)
+                # tasks = get_files_tasks(index)
                 loop.run_until_complete(asyncio.gather(*tasks))
             print('Take a deep breath: 30s')
             time.sleep(30)
