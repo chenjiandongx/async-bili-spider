@@ -1,4 +1,0 @@
-aiohttp
-aiofiles
-aiomysql
-pyut
