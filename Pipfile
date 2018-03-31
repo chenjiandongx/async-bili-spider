@@ -8,6 +8,7 @@ aiohttp = "*"
 aiofiles = "*"
 aiomysql = "*"
 pyut = "*"
+pyquery = "*"
 
 [dev-packages]
 
