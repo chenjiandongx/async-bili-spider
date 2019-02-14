@@ -110,4 +110,4 @@ if __name__ == '__main__':
 
 ## LICENSE
 
-MIT [@chenjiandongx](https://github.com/chenjiandongx)
+MIT [©chenjiandongx](https://github.com/chenjiandongx)

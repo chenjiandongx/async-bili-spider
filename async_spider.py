@@ -108,12 +108,7 @@ async def save_to_database(start, stop, label, loop):
         if row and row["data"]["view"] != "--" and row["data"]["aid"] != 0
     ]
     conn = await aiomysql.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
-        password="0303",
-        db="chenx",
-        loop=loop,
+        host="127.0.0.1", port=3306, user="root", password="root", db="chenx", loop=loop
     )
 
     async with conn.cursor() as cur:
@@ -169,14 +164,15 @@ def get_database_tasks(index, loop):
 
 
 if __name__ == "__main__":
-    MAX_CONNECT_COUNT = 1024  # 最大并发数
-    NUMBER = 10000 * 50  # 单任务爬取数
+    MAX_CONNECT_COUNT = 128  # 最大并发数
+    NUMBER = 10000 * 5  # 单任务爬取数
+    DEEP_BREATH = 18
     with timeit.timeit_block("h"):
         loop = asyncio.get_event_loop()
-        for index in range(0, 42, 2):
+        for index in range(0, 900, 2):
             with timeit.timeit_block("m"):
                 tasks = get_database_tasks(index, loop)
                 # tasks = get_files_tasks(index)
                 loop.run_until_complete(asyncio.gather(*tasks))
-            print("Take a deep breath: 30s")
-            time.sleep(30)
+            print("Take a deep breath: {}s".format(DEEP_BREATH))
+            time.sleep(DEEP_BREATH)
