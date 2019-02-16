@@ -13,7 +13,7 @@ COLUMNS = ["v_view", "v_danmaku", "v_reply", "v_favorite", "v_coin", "v_share"]
 HOST = "127.0.0.1"
 PORT = 3306
 USER = "root"
-PASSWORD = "0303"
+PASSWORD = "root"
 DATABASE = "chenx"
 CHARSET = "utf8"
 

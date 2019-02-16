@@ -164,9 +164,9 @@ def get_database_tasks(index, loop):
 
 
 if __name__ == "__main__":
-    MAX_CONNECT_COUNT = 128  # 最大并发数
+    MAX_CONNECT_COUNT = 64  # 最大并发数
     NUMBER = 10000 * 5  # 单任务爬取数
-    DEEP_BREATH = 18
+    DEEP_BREATH = 22
     with timeit.timeit_block("h"):
         loop = asyncio.get_event_loop()
         for index in range(0, 900, 2):
